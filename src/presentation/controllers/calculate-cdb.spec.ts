@@ -133,4 +133,20 @@ describe('CalculateCDB Controller', () => {
     await sut.handle(httpRequest);
     expect(calculateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
+
+  it('Should return 500 if calculateUnitCDB throws', async () => {
+    const { sut, calculateUnitCDBStub } = makeSut();
+
+    const error = new Error();
+    jest
+      .spyOn(calculateUnitCDBStub, 'compute')
+      .mockImplementationOnce(async () => {
+        return new Promise((resolve, reject) => reject(error));
+      });
+    const httpRequest = makeFakeRequest();
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      serverError(new ServerError(error.stack as string))
+    );
+  });
 });
