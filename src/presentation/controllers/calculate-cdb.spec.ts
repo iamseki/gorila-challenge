@@ -38,13 +38,16 @@ const makeFakeRequest = (): HttpRequest => ({
 });
 
 const makeSut = () => {
-  const calculator = makeCalculateUnitCDB();
-  const dateValidator = makeDateValidator();
-  const sut = new CalculateCDBController(calculator, dateValidator);
+  const calculateUnitCDBStub = makeCalculateUnitCDB();
+  const dateValidatorStub = makeDateValidator();
+  const sut = new CalculateCDBController(
+    calculateUnitCDBStub,
+    dateValidatorStub
+  );
   return {
-    calculatorStub: calculator,
+    calculateUnitCDBStub,
     sut,
-    dateValidatorStub: dateValidator,
+    dateValidatorStub,
   };
 };
 
