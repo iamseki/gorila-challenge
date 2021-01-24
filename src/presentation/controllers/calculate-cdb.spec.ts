@@ -43,4 +43,18 @@ describe('CalculateCDB', () => {
       badRequest(new MissingParamError('investmentDate'))
     );
   });
+  it('Should return 400 if currentDate is not provided', async () => {
+    const calculator = makeCalculateUnitCDB();
+    const sut = new CalculateCDBController(calculator);
+    const httpRequest = {
+      body: {
+        cdbRate: 103.5,
+        investmentDate: new Date('2016-12-26'),
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      badRequest(new MissingParamError('currentDate'))
+    );
+  });
 });
