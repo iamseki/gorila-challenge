@@ -48,7 +48,7 @@ const makeSut = () => {
   };
 };
 
-describe('CalculateCDB', () => {
+describe('CalculateCDB Controller', () => {
   it('Should return 400 if cdbRate is not provided', async () => {
     const { sut } = makeSut();
     const httpRequest = {
@@ -89,7 +89,7 @@ describe('CalculateCDB', () => {
     );
   });
 
-  test('Should return 400 if invalid date is provided', async () => {
+  it('Should return 400 if invalid date is provided', async () => {
     const { sut, dateValidatorStub } = makeSut();
     jest.spyOn(dateValidatorStub, 'isValid').mockReturnValueOnce(false);
     const httpRequest = makeFakeRequest();
@@ -97,7 +97,7 @@ describe('CalculateCDB', () => {
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('date')));
   });
 
-  test('Should call DateValidator with correct dates', async () => {
+  it('Should call DateValidator with correct dates', async () => {
     const { dateValidatorStub, sut } = makeSut();
     const isValidSpy = jest.spyOn(dateValidatorStub, 'isValid');
     const httpRequest = makeFakeRequest();
@@ -108,7 +108,7 @@ describe('CalculateCDB', () => {
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.investmentDate);
   });
 
-  test('Should return 500 if DateValidator throws', async () => {
+  it('Should return 500 if DateValidator throws', async () => {
     const { sut, dateValidatorStub } = makeSut();
     const error = new Error();
 
