@@ -10,5 +10,5 @@ export interface ComputedCDB {
 }
 
 export interface CalculateUnitCDB {
-  compute: (params: CalculateCDBParams) => Promise<ComputedCDB>;
+  compute: (params: CalculateCDBParams) => Promise<ComputedCDB[]>;
 }
