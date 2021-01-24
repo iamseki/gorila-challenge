@@ -14,7 +14,8 @@ import { CalculateCDBController } from './calculate-cdb';
 const makeCalculateUnitCDB = (): CalculateUnitCDB => {
   class CalculateUnitCDBStub implements CalculateUnitCDB {
     async compute(params: CalculateCDBParams): Promise<ComputedCDB[]> {
-      throw new Error('Method not implemented.');
+      const computedCDB: ComputedCDB[] = [];
+      return computedCDB;
     }
   }
   return new CalculateUnitCDBStub();
@@ -121,5 +122,15 @@ describe('CalculateCDB Controller', () => {
     const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(serverError(new ServerError(error.stack)));
+  });
+
+  it('Should call calculateUnitCDB with correct values', async () => {
+    const { sut, calculateUnitCDBStub } = makeSut();
+
+    const calculateSpy = jest.spyOn(calculateUnitCDBStub, 'compute');
+    const httpRequest = makeFakeRequest();
+
+    await sut.handle(httpRequest);
+    expect(calculateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
