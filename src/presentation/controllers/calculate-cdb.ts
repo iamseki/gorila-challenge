@@ -7,6 +7,11 @@ export class CalculateCDBController implements Controller {
   constructor(private readonly calculateUnitCDB: CalculateUnitCDB) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    return badRequest(new MissingParamError('cdbRate'));
+    const requiredFields = ['cdbRate', 'investmentDate', 'currentDate'];
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field])
+        return badRequest(new MissingParamError(field));
+    }
+    return { body: null, statusCode: 500 };
   }
 }

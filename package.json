@@ -4,6 +4,7 @@
   "description": "Gorilla challenge interview",
   "scripts": {
     "test": "jest",
+    "test:watch": "npm test -- --watch",
     "test:ci": "npm test -- --coverage",
     "test:staged": "npm test -- --findRelatedTests",
     "build": "tsc",
