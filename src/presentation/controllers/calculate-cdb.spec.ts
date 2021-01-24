@@ -6,6 +6,7 @@ import {
 import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
 import { badRequest } from '../helpers/http-helper';
+import { HttpRequest } from '../protocols/controller';
 import { DateValidator } from '../protocols/date-validator';
 import { CalculateCDBController } from './calculate-cdb';
 
@@ -26,6 +27,14 @@ const makeDateValidator = (): DateValidator => {
   }
   return new DateValidatorStub();
 };
+
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    currentDate: new Date('2016-12-26'),
+    cdbRate: 103.5,
+    investmentDate: new Date('2016-12-26'),
+  },
+});
 
 const makeSut = () => {
   const calculator = makeCalculateUnitCDB();
@@ -82,13 +91,7 @@ describe('CalculateCDB', () => {
   test('Should return 400 if invalid date is provided', async () => {
     const { sut, dateValidatorStub } = makeSut();
     jest.spyOn(dateValidatorStub, 'isValid').mockReturnValueOnce(false);
-    const httpRequest = {
-      body: {
-        currentDate: new Date('2016-12-26'),
-        cdbRate: 103.5,
-        investmentDate: new Date('2016-12-26'),
-      },
-    };
+    const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('date')));
   });

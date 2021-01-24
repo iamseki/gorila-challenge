@@ -21,8 +21,9 @@ export class CalculateCDBController implements Controller {
     const dateFields = ['investmentDate', 'currentDate'];
     for (const field of dateFields) {
       const date = httpRequest.body[field];
-      if (!this.dateValidator.isValid(date))
+      if (!this.dateValidator.isValid(date)) {
         return badRequest(new InvalidParamError('date'));
+      }
     }
     return { body: 500, statusCode: 500 };
   }
