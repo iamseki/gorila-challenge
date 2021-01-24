@@ -95,4 +95,15 @@ describe('CalculateCDB', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('date')));
   });
+
+  test('Should call DateValidator with correct dates', async () => {
+    const { dateValidatorStub, sut } = makeSut();
+    const isValidSpy = jest.spyOn(dateValidatorStub, 'isValid');
+    const httpRequest = makeFakeRequest();
+
+    await sut.handle(httpRequest);
+
+    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.currentDate);
+    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.investmentDate);
+  });
 });
