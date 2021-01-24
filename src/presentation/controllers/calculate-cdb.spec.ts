@@ -11,11 +11,15 @@ import { HttpRequest } from '../protocols/controller';
 import { DateValidator } from '../protocols/date-validator';
 import { CalculateCDBController } from './calculate-cdb';
 
+const makeMockComputedCDB = (): ComputedCDB[] => [
+  { date: new Date('2016-12-21'), unitPrice: 1014.38021 },
+  { date: new Date('2016-12-22'), unitPrice: 1014.91269 },
+  { date: new Date('2016-12-23'), unitPrice: 1015.44545 },
+];
 const makeCalculateUnitCDB = (): CalculateUnitCDB => {
   class CalculateUnitCDBStub implements CalculateUnitCDB {
     async compute(params: CalculateCDBParams): Promise<ComputedCDB[]> {
-      const computedCDB: ComputedCDB[] = [];
-      return computedCDB;
+      return makeMockComputedCDB();
     }
   }
   return new CalculateUnitCDBStub();
@@ -148,5 +152,13 @@ describe('CalculateCDB Controller', () => {
     expect(httpResponse).toEqual(
       serverError(new ServerError(error.stack as string))
     );
+  });
+
+  it('Should return 200 and expected responde body if everything works', async () => {
+    const { sut } = makeSut();
+    const httpRequest = makeFakeRequest();
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual(makeMockComputedCDB());
   });
 });
