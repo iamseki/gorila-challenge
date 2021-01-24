@@ -9,8 +9,9 @@ export class CalculateCDBController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredFields = ['cdbRate', 'investmentDate', 'currentDate'];
     for (const field of requiredFields) {
-      if (!httpRequest.body[field])
+      if (!httpRequest.body[field]) {
         return badRequest(new MissingParamError(field));
+      }
     }
     return { body: null, statusCode: 500 };
   }
