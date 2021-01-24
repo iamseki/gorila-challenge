@@ -28,7 +28,7 @@ export class CalculateCDBController implements Controller {
       }
 
       const { cdbRate, investmentDate, currentDate } = httpRequest.body;
-      const computedCDB = this.calculateUnitCDB.compute({
+      const computedCDB = await this.calculateUnitCDB.compute({
         cdbRate,
         investmentDate,
         currentDate,
