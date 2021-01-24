@@ -7,6 +7,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
   testEnvironment: 'node',
+  clearMocks: true,
   transform: {
     '.+\\.ts$': 'ts-jest'
   },

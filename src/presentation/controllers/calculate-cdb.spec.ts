@@ -5,7 +5,8 @@ import {
 } from '../../domain/calculate-unit-cdb';
 import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
-import { badRequest } from '../helpers/http-helper';
+import { ServerError } from '../errors/server-error';
+import { badRequest, serverError } from '../helpers/http-helper';
 import { HttpRequest } from '../protocols/controller';
 import { DateValidator } from '../protocols/date-validator';
 import { CalculateCDBController } from './calculate-cdb';
@@ -105,5 +106,17 @@ describe('CalculateCDB', () => {
 
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.currentDate);
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.investmentDate);
+  });
+
+  test('Should return 500 if DateValidator throws', async () => {
+    const { sut, dateValidatorStub } = makeSut();
+    const error = new Error();
+
+    jest.spyOn(dateValidatorStub, 'isValid').mockImplementation(() => {
+      throw error;
+    });
+    const httpRequest = makeFakeRequest();
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(serverError(new ServerError(error.stack)));
   });
 });
