@@ -1,7 +1,7 @@
 import { CalculateUnitCDB } from '../../domain/calculate-unit-cdb';
 import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
-import { badRequest, serverError } from '../helpers/http-helper';
+import { badRequest, serverError, success } from '../helpers/http-helper';
 import { Controller, HttpRequest, HttpResponse } from '../protocols/controller';
 import { DateValidator } from '../protocols/date-validator';
 
@@ -26,7 +26,14 @@ export class CalculateCDBController implements Controller {
           return badRequest(new InvalidParamError('date'));
         }
       }
-      return { body: 500, statusCode: 500 };
+
+      const { cdbRate, investmentDate, currentDate } = httpRequest.body;
+      const computedCDB = this.calculateUnitCDB.compute({
+        cdbRate,
+        investmentDate,
+        currentDate,
+      });
+      return success(computedCDB);
     } catch (err) {
       return serverError(err);
     }
