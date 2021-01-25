@@ -14,20 +14,27 @@ const makeInputCDBParams = (): CalculateCDBParams => ({
   currentDate: new Date('2016-11-21'),
 });
 
+const makeSut = () => {
+  const sut = new MemoizationCacheRepository();
+  const input = makeInputCDBParams();
+  const result = makeOutputComputedCDB();
+  return {
+    sut,
+    input,
+    result,
+  };
+};
+
 describe('ComputedCDB Memoization Repository', () => {
   it('Should be possible to set a key value pair in cache properly', async () => {
-    const sut = new MemoizationCacheRepository();
-    const input = makeInputCDBParams();
-    const output = makeOutputComputedCDB();
-
-    await sut.set(input, output);
+    const { sut, input, result } = makeSut();
+    await sut.set(input, result);
     const cachedResult = await sut.get(input);
-    expect(cachedResult).toEqual(output);
+    expect(cachedResult).toEqual(result);
   });
 
   it('Should returns an empty ComputedCDB array if cache doesnt has the input key', async () => {
-    const sut = new MemoizationCacheRepository();
-    const input = makeInputCDBParams();
+    const { sut, input } = makeSut();
     const cachedResult = await sut.get(input);
     expect(cachedResult).toEqual([]);
   });
