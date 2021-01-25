@@ -4,6 +4,6 @@ import {
 } from '../../domain/calculate-unit-cdb';
 
 export interface ComputedCDBCacheRepository {
-  get: (input: CalculateCDBParams) => ComputedCDB[];
-  set: (input: CalculateCDBParams, result: ComputedCDB[]) => void;
+  get: (input: CalculateCDBParams) => Promise<ComputedCDB[]>;
+  set: (input: CalculateCDBParams, result: ComputedCDB[]) => Promise<void>;
 }
