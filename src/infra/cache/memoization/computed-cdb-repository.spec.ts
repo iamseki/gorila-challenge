@@ -24,4 +24,11 @@ describe('ComputedCDB Memoization Repository', () => {
     const cachedResult = await sut.get(input);
     expect(cachedResult).toEqual(output);
   });
+
+  it('Should returns an empty ComputedCDB array if cache doesnt has the input key', async () => {
+    const sut = new MemoizationCacheRepository();
+    const input = makeInputCDBParams();
+    const cachedResult = await sut.get(input);
+    expect(cachedResult).toEqual([]);
+  });
 });
