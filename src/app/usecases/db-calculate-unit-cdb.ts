@@ -42,6 +42,7 @@ export class DBCalculateUnitCDB implements CalculateUnitCDB {
         unitPrice: this.roundAccurately(unitPrice, 8),
       };
     });
+    await this.computedCacheRepository.set(params, computedCDBs);
 
     return computedCDBs;
   }
