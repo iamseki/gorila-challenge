@@ -30,8 +30,8 @@ export class CalculateCDBController implements Controller {
       const { cdbRate, investmentDate, currentDate } = httpRequest.body;
       const computedCDB = await this.calculateUnitCDB.compute({
         cdbRate,
-        investmentDate,
-        currentDate,
+        investmentDate: new Date(investmentDate),
+        currentDate: new Date(currentDate),
       });
       return success(computedCDB);
     } catch (err) {
