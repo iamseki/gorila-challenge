@@ -47,6 +47,13 @@ const makeInputCDBParams = (): CalculateCDBParams => ({
   currentDate: new Date('2016-11-21'),
 });
 
+const makeOutputComputedCDB = (): ComputedCDB[] => [
+  { date: new Date('2016-11-14'), unitPrice: 1000.53397 },
+  { date: new Date('2016-11-16'), unitPrice: 1001.06822 },
+  { date: new Date('2016-11-17'), unitPrice: 1001.60276 },
+  { date: new Date('2016-11-18'), unitPrice: 1002.13758 },
+];
+
 const makeSut = () => {
   const computedCacheRepositoryStub = makeCacheRepository();
   const cdiRepositoryStub = makeCDIRepository();
@@ -70,6 +77,18 @@ describe('DBCalculateUnitCDB usecase', () => {
     expect(cacheSpy).toHaveBeenCalledWith(inputCDBParams);
   });
 
+  it('Should return correct computed values from computedCacheRepository', async () => {
+    const { sut, computedCacheRepositoryStub } = makeSut();
+    const inputCDBParams = makeInputCDBParams();
+    jest
+      .spyOn(computedCacheRepositoryStub, 'get')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(makeOutputComputedCDB()))
+      );
+    const computedCDB = await sut.compute(inputCDBParams);
+    expect(computedCDB).toEqual(makeOutputComputedCDB());
+  });
+
   it('Should search for a CDI in CDIRepository with correct values', async () => {
     const { cdiRepositoryStub, sut } = makeSut();
     const inputCDBParams = makeInputCDBParams();
@@ -84,12 +103,7 @@ describe('DBCalculateUnitCDB usecase', () => {
   it('Should return correct computed cdb values if success', async () => {
     const { sut } = makeSut();
     const inputCDBParams = makeInputCDBParams();
-    const expectedComputedCDB: ComputedCDB[] = [
-      { date: new Date('2016-11-14'), unitPrice: 1000.53397 },
-      { date: new Date('2016-11-16'), unitPrice: 1001.06822 },
-      { date: new Date('2016-11-17'), unitPrice: 1001.60276 },
-      { date: new Date('2016-11-18'), unitPrice: 1002.13758 },
-    ];
+    const expectedComputedCDB = makeOutputComputedCDB();
 
     const computedCDB = await sut.compute(inputCDBParams);
     expect(computedCDB).toEqual(expectedComputedCDB);
