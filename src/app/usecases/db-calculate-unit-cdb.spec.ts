@@ -68,6 +68,7 @@ describe('DBCalculateUnitCDB usecase', () => {
     const { sut, computedCacheRepositoryStub } = makeSut();
     const inputCDBParams = makeInputCDBParams();
     const cacheSpy = jest.spyOn(computedCacheRepositoryStub, 'get');
+
     await sut.compute(inputCDBParams);
     expect(cacheSpy).toHaveBeenCalledWith(inputCDBParams);
   });
@@ -76,7 +77,9 @@ describe('DBCalculateUnitCDB usecase', () => {
     const { cdiRepositoryStub, sut } = makeSut();
     const inputCDBParams = makeInputCDBParams();
     const repositorySpy = jest.spyOn(cdiRepositoryStub, 'findBetweenDate');
+
     await sut.compute(inputCDBParams);
+
     const { currentDate, investmentDate } = inputCDBParams;
     expect(repositorySpy).toHaveBeenCalledWith(investmentDate, currentDate);
   });
@@ -93,5 +96,15 @@ describe('DBCalculateUnitCDB usecase', () => {
 
     const computedCDB = await sut.compute(inputCDBParams);
     expect(computedCDB).toEqual(expectedComputedCDB);
+  });
+
+  it('Should insert into cache with correct values', async () => {
+    const { sut, computedCacheRepositoryStub } = makeSut();
+    const inputCDBParams = makeInputCDBParams();
+
+    const cacheSpy = jest.spyOn(computedCacheRepositoryStub, 'set');
+    const computedCDBs = await sut.compute(inputCDBParams);
+
+    expect(cacheSpy).toHaveBeenCalledWith(inputCDBParams, computedCDBs);
   });
 });
