@@ -26,13 +26,14 @@ export class DBCalculateUnitCDB implements CalculateUnitCDB {
     );
 
     let accumulatedTCDI = 1;
-    const fixedCalculation = cdbRate / 100;
+    const fixedRateCalculation = cdbRate / 100;
+    const fixedExpoentCalculation = 1 / 252;
 
     const computedCDBs: ComputedCDB[] = cdisWithoutCurrentDate.map((cdi) => {
       const { value, date } = cdi;
-      let kTCDI = (value / 100 + 1) ** (1 / 252) - 1;
+      let kTCDI = (value / 100 + 1) ** fixedExpoentCalculation - 1;
       kTCDI = Math.round(kTCDI * 100000000) / 100000000;
-      accumulatedTCDI *= 1 + kTCDI * fixedCalculation;
+      accumulatedTCDI *= 1 + kTCDI * fixedRateCalculation;
       accumulatedTCDI = this.truncateTo16Digits(accumulatedTCDI);
       const accTCDIRounded = this.roundAccurately(accumulatedTCDI, 8);
       const unitPrice = accTCDIRounded * 1000;
