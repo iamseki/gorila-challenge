@@ -16,4 +16,10 @@ describe('DateValidator Adapter', () => {
     const isValid = sut.isValid('invalid/date/');
     expect(isValid).toBe(false);
   });
+
+  it('Should return true if validator returns true', () => {
+    const sut = makeSut();
+    const isValid = sut.isValid('2016-11-14');
+    expect(isValid).toBeTruthy();
+  });
 });
