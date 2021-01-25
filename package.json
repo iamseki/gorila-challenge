@@ -8,7 +8,7 @@
     "test:ci": "npm test -- --coverage",
     "test:staged": "npm test -- --findRelatedTests",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/main/server.js",
     "start:dev": "ts-node-dev 'src/main/server.ts'",
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix",
