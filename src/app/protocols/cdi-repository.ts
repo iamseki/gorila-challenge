@@ -1,3 +1,7 @@
+export interface CDI {
+  value: number;
+  date: Date;
+}
 export interface CDIRepository {
-  findByDate: (date: string) => Promise<number>;
+  findBetweenDate: (start: Date, end: Date) => Promise<CDI[]>;
 }

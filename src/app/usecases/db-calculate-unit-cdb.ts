@@ -13,7 +13,43 @@ export class DBCalculateUnitCDB implements CalculateUnitCDB {
   ) {}
 
   async compute(params: CalculateCDBParams): Promise<ComputedCDB[]> {
-    await this.computedCacheRepository.get(params);
-    return [];
+    const computedCache = await this.computedCacheRepository.get(params);
+    if (computedCache.length > 0) return computedCache;
+
+    const { investmentDate, currentDate, cdbRate } = params;
+    const cdis = await this.cdiRepository.findBetweenDate(
+      investmentDate,
+      currentDate
+    );
+    const cdisWithoutCurrentDate = cdis.filter(
+      (cdi) => cdi.date.getTime() !== params.currentDate.getTime()
+    );
+
+    let accumulatedTCDI = 1;
+    const fixedCalculation = cdbRate / 100;
+
+    const computedCDBs: ComputedCDB[] = cdisWithoutCurrentDate.map((cdi) => {
+      const { value, date } = cdi;
+      let kTCDI = (value / 100 + 1) ** (1 / 252) - 1;
+      kTCDI = Math.round(kTCDI * 100000000) / 100000000;
+      accumulatedTCDI *= 1 + kTCDI * fixedCalculation;
+      accumulatedTCDI = this.truncateTo16Digits(accumulatedTCDI);
+      const accTCDIRounded = this.roundAccurately(accumulatedTCDI, 8);
+      const unitPrice = accTCDIRounded * 1000;
+      return {
+        date,
+        unitPrice: this.roundAccurately(unitPrice, 8),
+      };
+    });
+
+    return computedCDBs;
+  }
+
+  private roundAccurately(n: number, precision: number): number {
+    return Number(Math.round(Number(n + 'e' + precision)) + 'e-' + precision);
+  }
+
+  private truncateTo16Digits(n: number): number {
+    return Number(n.toFixed(16));
   }
 }
