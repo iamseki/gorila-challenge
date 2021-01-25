@@ -1,7 +1,4 @@
-import {
-  CalculateCDBParams,
-  ComputedCDB,
-} from '../../domain/calculate-unit-cdb';
+import { CalculateCDBParams, ComputedCDB } from '@/domain/calculate-unit-cdb';
 
 export interface ComputedCDBCacheRepository {
   get: (input: CalculateCDBParams) => Promise<ComputedCDB[]>;

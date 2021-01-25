@@ -1,4 +1,4 @@
-import { CalculateUnitCDB } from '../../domain/calculate-unit-cdb';
+import { CalculateUnitCDB } from '@/domain/calculate-unit-cdb';
 import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
 import { badRequest, serverError, success } from '../helpers/http-helper';

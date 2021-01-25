@@ -2,7 +2,7 @@ import {
   CalculateCDBParams,
   CalculateUnitCDB,
   ComputedCDB,
-} from '../../domain/calculate-unit-cdb';
+} from '@/domain/calculate-unit-cdb';
 import { ComputedCDBCacheRepository } from '../protocols/computed-cache-repository';
 import { CDIRepository } from '../protocols/cdi-repository';
 
