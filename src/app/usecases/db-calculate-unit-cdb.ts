@@ -29,19 +29,20 @@ export class DBCalculateUnitCDB implements CalculateUnitCDB {
     const fixedRateCalculation = cdbRate / 100;
     const fixedExpoentCalculation = 1 / 252;
 
-    const computedCDBs: ComputedCDB[] = cdisWithoutCurrentDate.map((cdi) => {
-      const { value, date } = cdi;
-      let kTCDI = (value / 100 + 1) ** fixedExpoentCalculation - 1;
-      kTCDI = Math.round(kTCDI * 100000000) / 100000000;
-      accumulatedTCDI *= 1 + kTCDI * fixedRateCalculation;
-      accumulatedTCDI = this.truncateTo16Digits(accumulatedTCDI);
-      const accTCDIRounded = this.roundAccurately(accumulatedTCDI, 8);
-      const unitPrice = accTCDIRounded * 1000;
-      return {
-        date,
-        unitPrice: this.roundAccurately(unitPrice, 8),
-      };
-    });
+    const computedCDBs: ComputedCDB[] = cdisWithoutCurrentDate.map(
+      ({ date, value }) => {
+        let kTCDI = (value / 100 + 1) ** fixedExpoentCalculation - 1;
+        kTCDI = this.roundAccurately(kTCDI, 8);
+        accumulatedTCDI *= 1 + kTCDI * fixedRateCalculation;
+        accumulatedTCDI = this.truncateTo16Digits(accumulatedTCDI);
+        const accTCDIRounded = this.roundAccurately(accumulatedTCDI, 8);
+        const unitPrice = accTCDIRounded * 1000;
+        return {
+          date,
+          unitPrice: this.roundAccurately(unitPrice, 8),
+        };
+      }
+    );
     await this.computedCacheRepository.set(params, computedCDBs);
 
     return computedCDBs;
