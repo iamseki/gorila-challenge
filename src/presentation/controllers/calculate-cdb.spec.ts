@@ -16,6 +16,13 @@ const makeMockComputedCDB = (): ComputedCDB[] => [
   { date: new Date('2016-12-22'), unitPrice: 1014.91269 },
   { date: new Date('2016-12-23'), unitPrice: 1015.44545 },
 ];
+
+const ExpectedControllerResponseBody = () => [
+  { date: '2016-12-21', unitPrice: 1014.38021 },
+  { date: '2016-12-22', unitPrice: 1014.91269 },
+  { date: '2016-12-23', unitPrice: 1015.44545 },
+];
+
 const makeCalculateUnitCDB = (): CalculateUnitCDB => {
   class CalculateUnitCDBStub implements CalculateUnitCDB {
     async compute(params: CalculateCDBParams): Promise<ComputedCDB[]> {
@@ -159,6 +166,6 @@ describe('CalculateCDB Controller', () => {
     const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(200);
-    expect(httpResponse.body).toEqual(makeMockComputedCDB());
+    expect(httpResponse.body).toEqual(ExpectedControllerResponseBody());
   });
 });

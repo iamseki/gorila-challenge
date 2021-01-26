@@ -33,7 +33,18 @@ export class CalculateCDBController implements Controller {
         investmentDate: new Date(investmentDate),
         currentDate: new Date(currentDate),
       });
-      return success(computedCDB);
+
+      const formatedResult = computedCDB.map(({ date, unitPrice }) => {
+        const day = date.getUTCDate();
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth() + 1;
+        const formatedStringDate = `${year}-${month}-${day}`;
+        return {
+          date: formatedStringDate,
+          unitPrice,
+        };
+      });
+      return success(formatedResult);
     } catch (err) {
       return serverError(err);
     }
