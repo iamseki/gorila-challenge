@@ -13,7 +13,7 @@ const mockCDIs = async () => {
   ]);
 };
 
-describe('Account Mongo Repository', () => {
+describe('CDI Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(
       process.env.MONGO_URL ?? 'mongodb://localhost:27017/gorila-challenge'
@@ -44,7 +44,7 @@ describe('Account Mongo Repository', () => {
     const lastCDIFound = cdis[cdisLength - 1];
 
     expect(cdisLength).toBeGreaterThan(0);
-    expect(lastCDIFound.date).toEqual(new Date('2016-11-18'));
+    expect(lastCDIFound.date).toEqual(new Date('2016-11-21'));
     expect(lastCDIFound.value).toBe(13.88);
   });
 });

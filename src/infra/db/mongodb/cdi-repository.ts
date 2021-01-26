@@ -9,7 +9,7 @@ export class CDIMongoRepository implements CDIRepository {
         {
           date: {
             $gte: start,
-            $lt: end,
+            $lte: end,
           },
         },
         { sort: { date: 1 } }
