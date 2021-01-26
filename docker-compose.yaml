@@ -24,3 +24,17 @@ services:
       - "9222:9222"
     links:
       - mongo
+  scripts:
+    container_name: scripts-container
+    image: alpine
+    restart: "no"
+    working_dir: /usr/scripts
+    command: sh -c "./populate-script --filename=CDI_Prices.csv"
+    volumes:
+      - ./scripts/:/usr/scripts/
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/gorila-challenge
+    links:
+      - mongo
+    depends_on: 
+      - mongo
