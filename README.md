@@ -15,6 +15,32 @@
   </a>
 </p>
 
+## Deploy
+
+### Frontend :earth_asia:
+
+- https://iamseki.github.io/gorila-front/
+
+### Backend :earth_americas:
+
+- https://gorila-challenge-api.herokuapp.com/api/v1/hc
+
+
+Rota exposta:
+
+| Endpoint         | Método  | Descrição                                |
+| -----------------| --------| ---------------------------------------- |
+| `/calculate/cdb` | `POST`  | Recurso responsável pelo cálculo do CDB  |
+
+- **Exemplo de chamada:**
+
+  ```shell
+    curl -X POST \
+     -H "Content-type:application/json" \
+     http://{API_URL}/api/v1/calculate/cdb \
+     -d '{ "investmentDate":"2016-11-14", "cdbRate": 103.5, "currentDate":"2016-12-26" }'
+  ```
+
 ## Rodando a API localmente
 
 ### Com docker-compose :whale2:
@@ -54,4 +80,5 @@ Com o mongodb *up* popular o banco com o CSV fornecido:
 
 - Desenvolvimento do script que processa o arquivo csv e persiste no mongo [link repositório](https://github.com/iamseki/csv-to-db)
 
-- ***TODO*** Desenvolvimento do frontend que consome esta API
+- Desenvolvimento do frontend que consome esta API [link repositório](https://github.com/iamseki/gorila-front)
+
