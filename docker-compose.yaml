@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mongo:
+    container_name: mongo-container
+    image: mongo
+    restart: on-failure
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  api:
+    container_name: api-container
+    image: node:12
+    working_dir: /usr/src/gorila-challenge
+    restart: on-failure
+    command: bash -c "npm install --only=prod && npm run debug"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/gorila-challenge
+    volumes:
+      - ./dist/:/usr/src/gorila-challenge/dist/
+      - ./package.json:/usr/src/gorila-challenge/package.json
+    ports:
+      - "8080:8080"
+      - "9222:9222"
+    links:
+      - mongo

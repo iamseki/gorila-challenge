@@ -8,7 +8,12 @@
     "test:ci": "npm test -- --coverage",
     "test:staged": "npm test -- --findRelatedTests",
     "build": "tsc",
+    "build:watch": "tsc -w",
     "start": "node dist/main/server.js",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
+    "up": "npm run build && docker-compose up -d",
+    "down": "docker-compose down",
+    "stop": "docker-compose stop",
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix",
     "style:check": "prettier --check 'src/**/*.ts'",
@@ -43,6 +48,7 @@
     "express": "^4.17.1",
     "module-alias": "^2.2.2",
     "mongodb": "^3.6.3",
+    "nodemon": "^2.0.7",
     "validator": "^13.5.2"
   },
   "_moduleAliases": {
