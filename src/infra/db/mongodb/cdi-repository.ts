@@ -5,12 +5,15 @@ export class CDIMongoRepository implements CDIRepository {
   async findBetweenDate(start: Date, end: Date): Promise<CDI[]> {
     const cdiCollection = await MongoHelper.getCollection<CDI>('cdi');
     const cdis = await cdiCollection
-      .find({
-        date: {
-          $gte: start,
-          $lt: end,
+      .find(
+        {
+          date: {
+            $gte: start,
+            $lt: end,
+          },
         },
-      })
+        { sort: { date: 1 } }
+      )
       .toArray();
 
     return cdis;
