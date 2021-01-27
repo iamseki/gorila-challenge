@@ -27,11 +27,18 @@ export class CalculateCDBController implements Controller {
         }
       }
 
-      const { cdbRate, investmentDate, currentDate } = httpRequest.body;
+      let { cdbRate, investmentDate, currentDate } = httpRequest.body;
+      investmentDate = new Date(investmentDate);
+      currentDate = new Date(currentDate);
+
+      if (currentDate <= investmentDate || investmentDate >= currentDate) {
+        return badRequest(new InvalidParamError('invalid input dates'));
+      }
+
       const computedCDB = await this.calculateUnitCDB.compute({
         cdbRate,
-        investmentDate: new Date(investmentDate),
-        currentDate: new Date(currentDate),
+        investmentDate,
+        currentDate,
       });
 
       const formatedResult = computedCDB.map(({ date, unitPrice }) => {
