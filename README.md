@@ -76,7 +76,7 @@ Com o mongodb *up* popular o banco com o CSV fornecido:
 
 Caso não tenha, segue link para instalação do [binário do k6](https://k6.io/docs/getting-started/installation)
 
-Símples teste de carga considerando o seguinte threshold:
+O teste simula um total de aprox. 150 requests por segundo em um período de 5 minutos resultando aprox 45000 requisições, é um símples teste de carga considerando o seguinte threshold:
 
 - O tempo de resposta de 99% das requisições devem se manter abaixo de 1.5s independente da carga no servidor.
 
