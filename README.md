@@ -39,6 +39,8 @@
      -d '{ "investmentDate":"2016-11-14", "cdbRate": 103.5, "currentDate":"2016-12-26" }'
   ```
 
+- Para o MongoDB utilizei o DaaS [Mongo Atlas](https://docs.atlas.mongodb.com/cluster-tier) com recursos computacionais limitados `512 MB de storage` e `RAM compartilhada`
+
 ## Rodando a API localmente
 
 ### Com docker-compose :whale2:
