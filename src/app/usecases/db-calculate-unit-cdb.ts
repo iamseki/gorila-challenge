@@ -33,13 +33,16 @@ export class DBCalculateUnitCDB implements CalculateUnitCDB {
       ({ date, value }) => {
         let kTCDI = (value / 100 + 1) ** fixedExpoentCalculation - 1;
         kTCDI = this.roundAccurately(kTCDI, 8);
+
         accumulatedTCDI *= 1 + kTCDI * fixedRateCalculation;
         accumulatedTCDI = this.truncateTo16Digits(accumulatedTCDI);
-        const accTCDIRounded = this.roundAccurately(accumulatedTCDI, 8);
-        const unitPrice = accTCDIRounded * 1000;
+        const accumulatedTCDIRounded = this.roundAccurately(accumulatedTCDI, 8);
+
+        const unitPrice = accumulatedTCDIRounded * 1000;
+        const unitPriceRoundedTo8Digits = this.roundAccurately(unitPrice, 8);
         return {
           date,
-          unitPrice: this.roundAccurately(unitPrice, 8),
+          unitPrice: unitPriceRoundedTo8Digits,
         };
       }
     );
