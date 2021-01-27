@@ -64,11 +64,25 @@ Com o mongodb *up* popular o banco com o CSV fornecido:
   - `./scripts/populate-script.exe`
 
 - Agora é só buildar com `npm run build` e startar a API **`npm run start`**
-## Rodando testes unitários 
+## Rodando testes
+
+### Testes unitários :one:
 
 - **`npm run test`**
 
 - com cover: **`npm run test:ci`**
+
+### Testes de performance com k6.js :muscle:
+
+Caso não tenha, segue link para instalação do [binário do k6](https://k6.io/docs/getting-started/installation)
+
+Símples teste de carga considerando o seguinte threshold:
+
+- O tempo de resposta de 99% das requisições devem se manter abaixo de 1.5s independente da carga no servidor.
+
+- Execute: `k6 run -e API_BASE='http://localhost:8080' scripts/k6-tests.js`
+
+  - `API_BASE` indica Endpoint da aplicação, o exemplo anterior aponta para a API rodando localmente via docker-compose.
 
 ---
 
