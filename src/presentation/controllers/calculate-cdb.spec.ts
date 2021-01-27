@@ -43,9 +43,9 @@ const makeDateValidator = (): DateValidator => {
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    currentDate: new Date('2016-12-26'),
+    currentDate: '2016-12-26',
     cdbRate: 103.5,
-    investmentDate: new Date('2016-12-26'),
+    investmentDate: '2016-12-17',
   },
 });
 
@@ -142,7 +142,11 @@ describe('CalculateCDB Controller', () => {
     const httpRequest = makeFakeRequest();
 
     await sut.handle(httpRequest);
-    expect(calculateSpy).toHaveBeenCalledWith(httpRequest.body);
+    expect(calculateSpy).toHaveBeenCalledWith({
+      currentDate: new Date('2016-12-26'),
+      cdbRate: 103.5,
+      investmentDate: new Date('2016-12-17'),
+    });
   });
 
   it('Should return 500 if calculateUnitCDB throws', async () => {
@@ -167,5 +171,35 @@ describe('CalculateCDB Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body).toEqual(ExpectedControllerResponseBody());
+  });
+
+  it('Should return 400 if current date <= investment date', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        currentDate: '2016-12-26',
+        cdbRate: 103.5,
+        investmentDate: '2016-12-26',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      badRequest(new InvalidParamError('invalid input dates'))
+    );
+  });
+
+  it('Should return 400 if investment date >= current date ', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        currentDate: '2016-12-20',
+        cdbRate: 103.5,
+        investmentDate: '2016-12-26',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      badRequest(new InvalidParamError('invalid input dates'))
+    );
   });
 });
