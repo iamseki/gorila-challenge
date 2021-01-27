@@ -26,9 +26,9 @@
 - https://gorila-challenge-api.herokuapp.com/api/v1/hc
 
 
-| Endpoint         | Método  | Descrição                                |
-| -----------------| --------| ---------------------------------------- |
-| `/calculate/cdb` | `POST`  | Recurso responsável pelo cálculo do CDB  |
+| Endpoint         | Método        | Descrição                                |
+| -----------------| --------------| -----------------------------------------|
+| `api/v1/calculate/cdb` | `POST`  | Recurso responsável pelo cálculo do CDB  |
 
 - **Exemplo de chamada:**
 
