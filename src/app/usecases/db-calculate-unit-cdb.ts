@@ -15,6 +15,7 @@ export class DBCalculateUnitCDB implements CalculateUnitCDB {
   async compute(params: CalculateCDBParams): Promise<ComputedCDB[]> {
     const computedCache = await this.computedCacheRepository.get(params);
     if (computedCache.length > 0) return computedCache;
+    if (params.cdbRate === 0) return [];
 
     const { investmentDate, currentDate, cdbRate } = params;
     const cdis = await this.cdiRepository.findBetweenDate(

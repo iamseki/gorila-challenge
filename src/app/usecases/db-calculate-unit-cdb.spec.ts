@@ -118,4 +118,13 @@ describe('DBCalculateUnitCDB usecase', () => {
 
     expect(cacheSpy).toHaveBeenCalledWith(inputCDBParams, computedCDBs);
   });
+
+  it('Should return an empty array if cdbRate is zero', async () => {
+    const { sut } = makeSut();
+    const inputCDBParams = makeInputCDBParams();
+
+    inputCDBParams.cdbRate = 0;
+    const computedCDB = await sut.compute(inputCDBParams);
+    expect(computedCDB).toEqual([]);
+  });
 });

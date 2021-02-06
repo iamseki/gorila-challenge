@@ -45,7 +45,7 @@
 
 ### Com docker-compose :whale2:
 
-- **`npm run up`**
+- **`npm i` && `npm run up`**
 
 >Para remover os containers e parar os serviços execute **npm run down** ou **npm run stop** para stop nos containers
 
